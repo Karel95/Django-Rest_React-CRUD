@@ -24,3 +24,14 @@ python manage.py migrate
 pip install djangorestframework
 
 pip install django-cors-headers
+
+python manage.py makemigrations
+<!-- python manage.py makemigrations tasks -->
+
+python manage.py migrate
+<!-- python manage.py migrate tasks -->
+
+python manage.py createsuperuser
+
+python manage.py runserver
+
