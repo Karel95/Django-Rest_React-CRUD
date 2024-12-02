@@ -1,3 +1,5 @@
+https://youtu.be/38XWpyEK8IY?si=yio-o-vQRspKHhoC
+
 pip freeze > requirements.txt
 
 pip install -r requirements.txt
