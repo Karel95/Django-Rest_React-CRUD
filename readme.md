@@ -39,3 +39,10 @@ python manage.py runserver
 
 pip install drf-yasg
 
+npm create vite@latest
+
+cd client
+npm install
+npm run dev
+
+npm i react-router-dom react-hot-toast axios react-hook-form
