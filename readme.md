@@ -37,3 +37,5 @@ python manage.py createsuperuser
 
 python manage.py runserver
 
+pip install drf-yasg
+
