@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 // Define el tipo de Task
 interface Task {
   id: number;
@@ -10,12 +12,20 @@ interface TaskCardProps {
   task: Task;
 }
 
-export const TaskCard: React.FC<TaskCardProps> = ({task}) => {
+export const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
+  const navigate = useNavigate();
   return (
-    <div key={task.id}>
+    <div
+      style={{ background: "#101010" }}
+      key={task.id}
+      onClick={() => {
+        // navigate(`/tasks/${task.id}`);
+        navigate("/tasks/" + task.id);
+      }}
+    >
       <h1>{task.title}</h1>
       <p>{task.description}</p>
       <hr />
     </div>
-  )
-}
+  );
+};

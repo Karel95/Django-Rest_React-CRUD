@@ -2,8 +2,8 @@ import { useForm } from "react-hook-form";
 // otras bibliotecas recomendadas para usar junto a 'react-hook-form':
 // yup
 // zod
-import { createTask } from "../api/tasks.api";
-import { useNavigate } from "react-router-dom";
+import { createTask, deleteTask } from "../api/tasks.api";
+import { useNavigate, useParams } from "react-router-dom";
 
 interface NewTask {
   title: string;
@@ -18,10 +18,11 @@ export function TaskFormPage() {
   } = useForm<NewTask>();
 
   const navigate = useNavigate();
+  const params = useParams();
 
-  const onSubmit = handleSubmit(async data => {
+  const onSubmit = handleSubmit(async (data) => {
     // // Enviar los datos al API para guardar la tarea
-    await createTask(data)
+    await createTask(data);
     // // Redireccionar a la página de tareas
     // window.location.href = "/tasks";
     navigate("/tasks");
@@ -51,6 +52,24 @@ export function TaskFormPage() {
         ></textarea>
         {errors.description && <span>Description is required!</span>}
         <button>Save</button>
+        {params.id && typeof params.id === "string" && (
+          <button
+            onClick={async() => {
+              const accepted = window.confirm("Are you sure?");
+              if (accepted) {
+                const taskId = Number(params.id);
+                if (!isNaN(taskId)) {
+                  await deleteTask(taskId);
+                  navigate("/tasks");
+                } else {
+                  console.error("El ID no es válido.");
+                }
+              }
+            }}
+          >
+            Delete
+          </button>
+        )}
       </form>
     </div>
   );

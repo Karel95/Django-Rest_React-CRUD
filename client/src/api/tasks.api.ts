@@ -41,3 +41,11 @@ export function createTask (task: NewTask) {
      .catch(error => console.log(error))
   )
 }
+
+export function deleteTask (id: number) {
+  // tasksApi.delete(`/${id}/`)
+  tasksApi.delete('/' + id + '/')
+}
+
+export function updateTask () {}
+
