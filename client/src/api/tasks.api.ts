@@ -47,5 +47,17 @@ export function deleteTask (id: number) {
   tasksApi.delete('/' + id + '/')
 }
 
-export function updateTask () {}
+export function updateTask (id: number, task: NewTask) {
+  // tasksApi.put(`/${id}/`, task)
+  tasksApi.put('/' + id + '/', task)
+   .then(response => response.data)
+   .catch(error => console.log(error))
+}
 
+export function getTaskById (id: number) {
+  return (
+    tasksApi.get(`/${id}/`)
+    .then(response => response.data)
+    .catch(error => console.log(error))
+  )
+}

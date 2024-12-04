@@ -1,8 +1,14 @@
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 // otras bibliotecas recomendadas para usar junto a 'react-hook-form':
 // yup
 // zod
-import { createTask, deleteTask } from "../api/tasks.api";
+import {
+  createTask,
+  deleteTask,
+  updateTask,
+  getTaskById,
+} from "../api/tasks.api";
 import { useNavigate, useParams } from "react-router-dom";
 
 interface NewTask {
@@ -15,25 +21,63 @@ export function TaskFormPage() {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm<NewTask>();
 
   const navigate = useNavigate();
   const params = useParams();
 
   const onSubmit = handleSubmit(async (data) => {
-    // // Enviar los datos al API para guardar la tarea
-    await createTask(data);
+    if (params.id) {
+      const taskId = Number(params.id);
+      if (!isNaN(taskId)) {
+        await updateTask(taskId, data);
+      } else {
+        console.error("El ID no es válido.");
+      }
+    } else {
+      // // Enviar los datos al API para guardar la tarea
+      await createTask(data);
+      // // Opcionalmente, mostrar un mensaje de éxito al guardar la tarea
+      alert("Task created successfully!");
+    }
     // // Redireccionar a la página de tareas
     // window.location.href = "/tasks";
     navigate("/tasks");
-    // // Opcionalmente, mostrar un mensaje de éxito al guardar la tarea
-    alert("Task created successfully!");
   });
   // // Validaciones personalizadas con 'react-hook-form'
   // const validationSchema = yup.object().shape({
   //   title: yup.string().required("Title is required"),
   //   description: yup.string().required("Description is required"),
   // });
+
+  useEffect(() => {
+    async function loadTask() {
+      if (params.id) {
+        const taskId = Number(params.id);
+        console.log(taskId);
+        if (!isNaN(taskId)) {
+          const task = await getTaskById(taskId);
+          console.log(task);
+          if (task) {
+            // Rellenar el formulario con los datos de la tarea
+            setValue("title", task.title);
+            setValue("description", task.description);
+          } else {
+            console.error("La tarea no existe.");
+          }
+        } else {
+          console.error("El ID no es válido.");
+        }
+      }
+
+      // return () => {
+      //   // Limpiar los valores del formulario cuando se desmonta la página
+      //   reset();
+      // };
+    }
+    loadTask();
+  }, [params.id, setValue]);
 
   return (
     <div>
@@ -54,7 +98,7 @@ export function TaskFormPage() {
         <button>Save</button>
         {params.id && typeof params.id === "string" && (
           <button
-            onClick={async() => {
+            onClick={async () => {
               const accepted = window.confirm("Are you sure?");
               if (accepted) {
                 const taskId = Number(params.id);
