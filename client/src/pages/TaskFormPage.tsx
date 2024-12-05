@@ -10,6 +10,7 @@ import {
   getTaskById,
 } from "../api/tasks.api";
 import { useNavigate, useParams } from "react-router-dom";
+import toast from "react-hot-toast";
 
 interface NewTask {
   title: string;
@@ -32,6 +33,19 @@ export function TaskFormPage() {
       const taskId = Number(params.id);
       if (!isNaN(taskId)) {
         await updateTask(taskId, data);
+        toast.success('Task updated successfully', {
+          icon: "success",
+          duration: 3000,
+          position: "top-right",
+          style: {
+            background: "#32CD32",
+            color: "white",
+            borderRadius: "5px",
+            padding: "10px",
+            fontSize: "16px",
+            fontWeight: "bold",
+          }
+        })
       } else {
         console.error("El ID no es válido.");
       }
@@ -39,7 +53,20 @@ export function TaskFormPage() {
       // // Enviar los datos al API para guardar la tarea
       await createTask(data);
       // // Opcionalmente, mostrar un mensaje de éxito al guardar la tarea
-      alert("Task created successfully!");
+      // alert("Task created successfully!");
+      toast.success('Task created successfully', {
+        icon: "success",
+        duration: 3000,
+        position: "top-right",
+        style: {
+          background: "#32CD32",
+          color: "white",
+          borderRadius: "5px",
+          padding: "10px",
+          fontSize: "16px",
+          fontWeight: "bold",
+        }
+      })
     }
     // // Redireccionar a la página de tareas
     // window.location.href = "/tasks";
@@ -104,6 +131,19 @@ export function TaskFormPage() {
                 const taskId = Number(params.id);
                 if (!isNaN(taskId)) {
                   await deleteTask(taskId);
+                  toast.success('Task deleted successfully', {
+                    icon: "success",
+                    duration: 3000,
+                    position: "top-right",
+                    style: {
+                      background: "#32CD32",
+                      color: "white",
+                      borderRadius: "5px",
+                      padding: "10px",
+                      fontSize: "16px",
+                      fontWeight: "bold",
+                    }
+                  });
                   navigate("/tasks");
                 } else {
                   console.error("El ID no es válido.");
